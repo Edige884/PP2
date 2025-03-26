@@ -6,8 +6,8 @@ wind = pygame.display.set_mode((1400,1050))
 clock = pygame.time.Clock()
 
 imgMicky = pygame.image.load("C:/Users/Edige/Desktop/PP2_git/Labs/Lab_7/Clock pictures/Micky.png")
-imgSec = pygame.image.load("C:/Users/Edige/Desktop/PP2_git/Labs/Lab_7/Clock pictures/secArm.png")
-imgMin = pygame.image.load("C:/Users/Edige/Desktop/PP2_git/Labs/Lab_7/Clock pictures/minArm.png")
+imgMin = pygame.image.load("C:/Users/Edige/Desktop/PP2_git/Labs/Lab_7/Clock pictures/secArm.png")
+imgSec = pygame.image.load("C:/Users/Edige/Desktop/PP2_git/Labs/Lab_7/Clock pictures/minArm.png")
 
 centerMinArm = (700,525)  
 centerSecArm = (700,525) 
@@ -17,8 +17,8 @@ def rotate_arm(image,angle,center):
     new_rect = rotated_image.get_rect(center=center)
     return rotated_image,new_rect.topleft
 
-imgMin,b = rotate_arm(imgMin,50,centerMinArm)
-imgSec,c = rotate_arm(imgSec,5,centerSecArm)
+imgMin,b = rotate_arm(imgMin,5,centerMinArm)
+imgSec,c = rotate_arm(imgSec,50,centerSecArm)
 
 done = True
 while done:

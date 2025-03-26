@@ -13,6 +13,7 @@ while q:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             q = False
+    screen.fill((255,255,255))
             
     pygame.draw.circle(screen,(255,0,0),center=(x,y),radius=25)
     pressed = pygame.key.get_pressed()
