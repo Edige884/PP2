@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 # Initialize Pygame
 pygame.init()
@@ -25,12 +26,20 @@ score = 0
 snake = [(WIDTH // 2, HEIGHT // 2)]
 snake_direction = (CELL_SIZE, 0)
 
-# Function to generate food at a random position (not on the snake)
+# Food variables
+food = None
+food_timer = None
+food_value = 1  # Default food value
+
+# Function to generate food at a random position with different values
 def generate_food():
+    global food_timer, food_value
     while True:
         food_x = random.randint(0, (WIDTH // CELL_SIZE) - 1) * CELL_SIZE
         food_y = random.randint(0, (HEIGHT // CELL_SIZE) - 1) * CELL_SIZE
-        if (food_x, food_y) not in snake:  # Ensure food doesn't spawn on the snake
+        if (food_x, food_y) not in snake:
+            food_value = 1
+            food_timer = time.time()
             return food_x, food_y
 
 # Generate the first food
@@ -52,13 +61,13 @@ while running:
     # Snake movement control
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP] and snake_direction != (0, CELL_SIZE):  
-        snake_direction = (0, -CELL_SIZE / 2)
+        snake_direction = (0, -CELL_SIZE)
     if keys[pygame.K_DOWN] and snake_direction != (0, -CELL_SIZE):  
-        snake_direction = (0, CELL_SIZE / 2)
+        snake_direction = (0, CELL_SIZE)
     if keys[pygame.K_LEFT] and snake_direction != (CELL_SIZE, 0):  
-        snake_direction = (-CELL_SIZE / 2, 0)
+        snake_direction = (-CELL_SIZE, 0)
     if keys[pygame.K_RIGHT] and snake_direction != (-CELL_SIZE, 0):  
-        snake_direction = (CELL_SIZE / 2, 0)
+        snake_direction = (CELL_SIZE, 0)
 
     # Move the snake
     new_head = (snake[0][0] + snake_direction[0], snake[0][1] + snake_direction[1])
@@ -78,9 +87,8 @@ while running:
 
     # Check if snake eats food
     if new_head == food:
-        score += 1
+        score += food_value
         food = generate_food()  # Generate new food
-        # Increase level every 3 points
         if score % 3 == 0:
             level += 1
             speed += 2
@@ -94,9 +102,10 @@ while running:
     for segment in snake:
         pygame.draw.rect(screen, SNAKE_COLOR, (segment[0], segment[1], CELL_SIZE, CELL_SIZE))
 
-    # Draw the food
-    pygame.draw.rect(screen, FOOD_COLOR, (food[0], food[1], CELL_SIZE, CELL_SIZE))
-
+    # Draw the food if available
+    if food:
+        pygame.draw.rect(screen, FOOD_COLOR, (food[0], food[1], CELL_SIZE, CELL_SIZE))
+    
     # Display score and level
     score_text = font.render(f"Score: {score}", True, TEXT_COLOR)
     level_text = font.render(f"Level: {level}", True, TEXT_COLOR)
